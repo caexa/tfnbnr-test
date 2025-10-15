@@ -6,40 +6,58 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" href="data:,">
   <style>
-    :root{--accent:#3b82f6;--accent-light:#60a5fa;--bg:#f8f9fb;--card:rgba(255,255,255,.65);--text:#111827;--muted:#6b7280;--radius:1rem;--shadow:0 4px 24px rgba(0,0,0,.06);}
-    body.dark{--bg:#0f172a;--card:rgba(30,41,59,.65);--text:#f9fafb;--muted:#9ca3af;}
-    *{box-sizing:border-box;margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+    /*  pastel + soft shadows  */
+    :root{
+      --bg:#f5f7fa; --card:#ffffff;
+      --accent:#7c7cff; --accent-light:#a5a5ff;
+      --text:#2d3748; --muted:#718096;
+      --radius:1.25rem; --shadow:0 4px 20px rgba(0,0,0,.05);
+    }
+    body.dark{
+      --bg:#1a202c; --card:#2d3748;
+      --text:#f7fafc; --muted:#a0aec0;
+    }
+    *{box-sizing:border-box;margin:0;font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
     body{background:var(--bg);color:var(--text);line-height:1.55;min-height:100vh;display:flex;flex-direction:column;}
-    main{flex:1;max-width:900px;margin:0 auto;padding:1rem 1rem 5rem;}
-    header{position:sticky;top:0;z-index:10;background:var(--card);backdrop-filter:blur(12px);border-bottom:1px solid rgba(0,0,0,.05);display:flex;align-items:center;justify-content:space-between;padding:.75rem 1rem;transition:box-shadow .3s;}
+    main{flex:1;max-width:900px;margin:0 auto;padding:1rem 1rem 5.5rem;width:100%;}
+    h1,h2,h3{font-weight:600;letter-spacing:-.3px;}
+    p,span{font-size:.9rem;}
+
+    /*  glass header  */
+    header{position:sticky;top:0;z-index:10;background:var(--card);backdrop-filter:blur(10px);border-bottom:1px solid rgba(0,0,0,.05);display:flex;align-items:center;justify-content:space-between;padding:.75rem 1rem;transition:box-shadow .3s;}
     header.scrolled{box-shadow:var(--shadow);}
-    h1{font-size:1.5rem;font-weight:800;letter-spacing:-.5px;}
+    .logo{font-size:1.4rem;font-weight:700;color:var(--accent);}
     .toggle{appearance:none;width:40px;height:20px;background:var(--muted);border-radius:999px;position:relative;cursor:pointer;transition:.3s;}
     .toggle::after{content:"";position:absolute;width:16px;height:16px;background:#fff;border-radius:50%;top:2px;left:2px;transition:.3s;}
     .toggle:checked{background:var(--accent)}.toggle:checked::after{transform:translateX(20px);}
-    .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--card);backdrop-filter:blur(12px);border-top:1px solid rgba(0,0,0,.05);display:flex;justify-content:space-around;padding:.5rem 0;z-index:20;}
-    .bottom-nav button{flex:1;background:none;border:none;color:var(--muted);font-size:.7rem;display:flex;flex-direction:column;align-items:center;gap:.25rem;cursor:pointer;transition:color .2s;}
+
+    /*  bottom pastel nav  */
+    .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--card);backdrop-filter:blur(10px);border-top:1px solid rgba(0,0,0,.05);display:flex;justify-content:space-around;padding:.4rem 0;z-index:20;}
+    .bottom-nav button{flex:1;background:none;border:none;color:var(--muted);font-size:.65rem;display:flex;flex-direction:column;align-items:center;gap:.2rem;cursor:pointer;transition:color .2s;}
     .bottom-nav button.active{color:var(--accent);}
-    .bottom-nav svg{width:20px;height:20px;stroke-width:1.5;}
-    section{background:var(--card);border-radius:var(--radius);padding:1.25rem 1.5rem 1.5rem;box-shadow:var(--shadow);margin-bottom:1.25rem;border:1px solid rgba(0,0,0,.05);}
-    label{font-size:.8rem;color:var(--muted);display:block;margin-bottom:.25rem;}
-    select,input{width:100%;padding:.55rem .65rem;border:1px solid #d1d5db;border-radius:var(--radius);font-size:.95rem;margin-bottom:.9rem;}
+    .bottom-nav svg{width=22px;height=22px;stroke-width=1.6;}
+
+    /*  pastel cards  */
+    section{background:var(--card);border-radius:var(--radius);padding:1.25rem 1.5rem;margin-bottom:1rem;box-shadow:var(--shadow);border:1px solid rgba(0,0,0,.05);}
+    label{font-size:.75rem;color:var(--muted);display:block;margin-bottom:.25rem;}
+    input,select{width:100%;padding:.55rem .65rem;border:1px solid #e2e8f0;border-radius:var(--radius);font-size:.9rem;margin-bottom:.8rem;background:transparent;}
     .row{display:flex;gap:.5rem;}.row .field{flex:1;}
-    button.cta{width:100%;padding:.7rem;border:none;border-radius:var(--radius);background:var(--accent);color:#fff;font-size:1rem;font-weight:600;cursor:pointer;transition:background .2s,transform .1s;}
-    button.cta:hover{background:var(--accent-light);}button.cta:active{transform:scale(.98);}
-    .progress-bar{height:10px;background:#e5e7eb;border-radius:5px;overflow:hidden;margin-top:.4rem;}.progress-bar div{height:100%;background:var(--accent);width:0%;transition:width .4s;}
+    button.cta{width:100%;padding:.7rem;border:none;border-radius:var(--radius);background:var(--accent);color:#fff;font-size:.9rem;font-weight:600;cursor:pointer;transition:background .2s,transform .1s;}
+    button.cta:hover{background:var(--accent-light);}button.cta:active{transform:scale(.97);}
+    .progress-bar{height:8px;background:#e2e8f0;border-radius:4px;overflow:hidden;margin-top:.4rem;}.progress-bar div{height:100%;background:var(--accent);width:0%;transition:width .4s;}
     .view{display:none;}.view.active{display:block;}
-    /* ----  SIGN-IN MODAL  ---- */
+    .hidden{display:none;}
+
+    /*  sign-in modal  */
     .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);backdrop-filter:blur(4px);z-index:100;display:flex;align-items:center;justify-content:center;padding:1rem;}
     .modal-content{background:var(--card);border-radius:var(--radius);padding:2rem;max-width:400px;width:100%;text-align:center;box-shadow:var(--shadow);}
     .modal-content h3{margin-bottom:1rem;}
     .modal-content .cta{margin-bottom:.75rem;}
-    .hidden{display:none;}
   </style>
 </head>
 <body>
   <header id="topbar">
-    <h1>tfnbnr</h1>
+    <div class="logo">tfnbnr</div>
     <div><label><input type="checkbox" class="toggle" id="darkToggle"> Dark</label></div>
   </header>
 
@@ -47,81 +65,84 @@
     <!--  SIGN-IN MODAL  -->
     <div id="signModal" class="modal-overlay hidden">
       <div class="modal-content">
-        <h3>Join to compete &amp; lead boards</h3>
+        <h3>Sign in to unlock partners &amp; leaderboards</h3>
         <button class="cta" id="googleBtn">Sign in with Google</button>
         <button class="cta" id="mailBtn">Sign in with e-mail link</button>
-        <button class="cta" id="closeModal" style="background:#6b7280">Maybe later</button>
+        <button class="cta" id="closeModal" style="background:#a0aec0">Maybe later</button>
       </div>
     </div>
 
     <!--  MAIN APP  (always visible)  -->
     <div id="mainApp">
-      <!-- Solo -->
-      <div class="view active" id="solo">
+      <!--  HOME / EXPLORE  -->
+      <div class="view active" id="home">
         <section>
-          <h2>Solo Focus Timer</h2>
-          <label>Course</label><select id="soloCourse"></select>
-          <div class="row">
-            <div class="field"><label>Minutes</label><input id="focusMinutes" type="number" min="0" max="999" value="25"></div>
-            <div class="field"><label>Seconds</label><input id="focusSeconds" type="number" min="0" max="59" value="0"></div>
+          <h2>📚 Featured this week</h2>
+          <div style="background:linear-gradient(135deg,#a5b4fc,#c7d2fe);color:#1e293b;padding:1.25rem;border-radius:var(--radius);margin-bottom:1rem;">
+            <strong>AP Calculus AB Boot-Camp</strong><br>
+            <span style="font-size:.8rem;">25-min daily sprint • 412 active</span>
           </div>
-          <button class="cta" id="focusStartBtn">Start focus</button>
-          <button class="cta" id="focusResetBtn" style="margin-top:.5rem;background:#6b7280">Reset</button>
-          <div class="progress-bar"><div id="focusProgress"></div></div>
-          <p style="text-align:center;margin-top:.5rem;font-size:1.5rem;font-weight:700" id="focusTimerText">25:00</p>
+          <h3>Trending topics</h3>
+          <div class="row" style="flex-wrap:wrap;gap:.5rem;">
+            <button class="cta" style="flex:1 1 100px;background:#c7d2fe;color:#1e293b;">Math</button>
+            <button class="cta" style="flex:1 1 100px;background:#fecaca;color:#1e293b;">English</button>
+            <button class="cta" style="flex:1 1 100px;background:#fef3c7;color:#1e293b;">History</button>
+            <button class="cta" style="flex:1 1 100px;background:#d1fae5;color:#1e293b;">Science</button>
+          </div>
         </section>
       </div>
 
-      <!-- 1v1  (gated)  -->
-      <div class="view" id="compete">
+      <!--  SEARCH / EXPLORE  -->
+      <div class="view" id="explore">
         <section>
-          <h2>Find a live opponent</h2>
-          <label>Course</label><select id="compCourse"></select>
-          <button class="cta" id="findMatch">Find match</button>
-          <div id="matchArea"></div>
+          <input placeholder="Search topics or study rooms…" style="margin-bottom:1rem;">
+          <h3>Popular categories</h3>
+          <div class="row" style="flex-wrap:wrap;gap:.5rem;">
+            <button class="cta" style="flex:1 1 auto;background:#e0e7ff;color:#1e293b;">Math</button>
+            <button class="cta" style="flex:1 1 auto;background:#e0e7ff;color:#1e293b;">Physics</button>
+            <button class="cta" style="flex:1 1 auto;background:#e0e7ff;color:#1e293b;">Chemistry</button>
+            <button class="cta" style="flex:1 1 auto;background:#e0e7ff;color:#1e293b;">Philosophy</button>
+            <button class="cta" style="flex:1 1 auto;background:#e0e7ff;color:#1e293b;">Biology</button>
+            <button class="cta" style="flex:1 1 auto;background:#e0e7ff;color:#1e293b;">English</button>
+          </div>
+          <h3 style="margin-top:1rem;">Trending rooms</h3>
+          <div style="font-size:.8rem;color:var(--muted);">Rooms will appear here once you sign in.</div>
         </section>
       </div>
 
-      <!-- Leaders  (gated)  -->
-      <div class="view" id="leader">
-        <section><h2>Daily Solo Leaders</h2><div id="soloLeader"></div></section>
-        <section><h2>Competitive Wins</h2><div id="compLeader"></div></section>
-      </div>
-
-      <!-- Profile  (gated)  -->
-      <div class="view" id="profile">
+      <!--  CREATE  -->
+      <div class="view" id="create">
         <section>
-          <h2>Your Card</h2>
-          <p><strong id="cardName">—</strong></p>
-          <p>Focus minutes: <b id="cardMin">0</b></p>
-          <p>Wins: <b id="cardWins">0</b></p>
-          <p>Level: <b id="cardLvl">Rookie</b></p>
-          <button class="cta" id="resetProf">Reset my data</button>
+          <h2>Create a topic</h2>
+          <input placeholder="Topic name…">
+          <textarea placeholder="Write your note (LaTeX supported)…" rows="5" style="resize:vertical;"></textarea>
+          <div class="row">
+            <button class="cta" style="flex:1;background:#e0e7ff;color:#1e293b;">📷 Image</button>
+            <button class="cta" style="flex:1;background:#e0e7ff;color:#1e293b;">🔗 Link</button>
+          </div>
+          <button class="cta">Publish</button>
         </section>
       </div>
-    </div>
-  </main>
 
-  <!-- Bottom nav -->
-  <nav class="bottom-nav">
-    <button data-tab="solo" class="active">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-      <span>Solo</span>
-    </button>
-    <button data-tab="compete">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><path d="M20 8v6M23 11h-6"></path></svg>
-      <span>1-v-1</span>
-    </button>
-    <button data-tab="leader">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 9l6 6 6-6"></path></svg>
-      <span>Leaders</span>
-    </button>
-    <button data-tab="profile">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-      <span>Profile</span>
-    </button>
-  </nav>
+      <!--  CHAT  -->
+      <div class="view" id="chat">
+        <section>
+          <h2>Chat</h2>
+          <div style="display:flex;gap:.5rem;margin-bottom:1rem;">
+            <button class="cta" style="flex:1;background:transparent;color:var(--accent);border:1px solid var(--accent);">Chats</button>
+            <button class="cta" style="flex:1;background:transparent;color:var(--muted);border:1px solid var(--muted);">Groups</button>
+          </div>
+          <div style="font-size:.8rem;color:var(--muted);">Sign in to see your conversations.</div>
+        </section>
+      </div>
 
-  <script type="module" src="tfnbnr.js"></script>
-</body>
-</html>
+      <!--  STUDY  -->
+      <div class="view" id="study">
+        <section>
+          <h2>Study</h2>
+          <div style="display:flex;gap:.5rem;margin-bottom:1rem;">
+            <button class="cta" style="flex:1;background:transparent;color:var(--accent);border:1px solid var(--accent);">Goals</button>
+            <button class="cta" style="flex:1;background:transparent;color:var(--muted);border:1px solid var(--muted);">Analytics</button>
+          </div>
+          <h3>Goals this week</h3>
+          <label><input type="checkbox"> Review AP Calc AB limits
