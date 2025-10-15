@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>tfnbnr – study together</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,">
+  <style>
+    /* ➕ glass-morphism + soft shadows */
+    :root{
+      --accent:#3b82f6; --accent-light:#60a5fa;
+      --bg:#f8f9fb; --card:rgba(255,255,255,.65); --text:#111827; --muted:#6b7280;
+      --radius:1rem; --shadow:0 4px 24px rgba(0,0,0,.06);
+    }
+    body.dark{
+      --bg:#0f172a; --card:rgba(30,41,59,.65); --text:#f9fafb; --muted:#9ca3af;
+    }
+    *{box-sizing:border-box;margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+    body{background:var(--bg);color:var(--text);line-height:1.55;min-height:100vh;display:flex;flex-direction:column;}
+    main{flex:1;max-width:900px;margin:0 auto;padding:1rem 1rem 5rem;} /* bottom pad for nav */
+
+    /* ➕ header glass */
+    header{position:sticky;top:0;z-index:10;background:var(--card);backdrop-filter:blur(12px);border-bottom:1px solid rgba(0,0,0,.05);display:flex;align-items:center;justify-content:space-between;padding:.75rem 1rem;transition:box-shadow .3s;}
+    header.scrolled{box-shadow:var(--shadow);}
+    h1{font-size:1.5rem;font-weight:800;letter-spacing:-.5px;}
+    .toggle{appearance:none;width:40px;height:20px;background:var(--muted);border-radius:999px;position:relative;cursor:pointer;transition:.3s;}
+    .toggle::after{content:"";position:absolute;width:16px;height:16px;background:#fff;border-radius:50%;top:2px;left:2px;transition:.3s;}
+    .toggle:checked{background:var(--accent)}.toggle:checked::after{transform:translateX(20px);}
+
+    /* ➕ bottom nav glass */
+    .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--card);backdrop-filter:blur(12px);border-top:1px solid rgba(0,0,0,.05);display:flex;justify-content:space-around;padding:.5rem 0;z-index:20;}
+    .bottom-nav button{flex:1;background:none;border:none;color:var(--muted);font-size:.7rem;display:flex;flex-direction:column;align-items:center;gap:.25rem;cursor:pointer;transition:color .2s;}
+    .bottom-nav button.active{color:var(--accent);}
+    .bottom-nav svg{width:20px;height:20px;stroke-width:1.5;}
+
+    /* ➕ card glass */
+    section{background:var(--card);border-radius:var(--radius);padding:1.25rem 1.5rem 1.5rem;box-shadow:var(--shadow);margin-bottom:1.25rem;border:1px solid rgba(0,0,0,.05);}
+    label{font-size:.8rem;color:var(--muted);display:block;margin-bottom:.25rem;}
+    select,input{width:100%;padding:.55rem .65rem;border:1px solid #d1d5db;border-radius:var(--radius);font-size:.95rem;margin-bottom:.9rem;}
+    .row{display:flex;gap:.5rem;}
+    .row .field{flex:1;}
+    button.cta{width:100%;padding:.7rem;border:none;border-radius:var(--radius);background:var(--accent);color:#fff;font-size:1rem;font-weight:600;cursor:pointer;transition:background .2s, transform .1s;}
+    button.cta:hover{background:var(--accent-light);}
+    button.cta:active{transform:scale(.98);}
+    .progress-bar{height:10px;background:#e5e7eb;border-radius:5px;overflow:hidden;margin-top:.4rem;}
+    .progress-bar div{height:100%;background:var(--accent);width:0%;transition:width .4s;}
+    .view{display:none;}.view.active{display:block;}
+    .hidden{display:none;}
+  </style>
+</head>
+<body>
+  <!-- ➕ glass header -->
+  <header id="topbar">
+    <h1>tfnbnr</h1>
+    <div><label><input type="checkbox" class="toggle" id="darkToggle"> Dark</label></div>
+  </header>
+
+  <main>
+    <!-- Auth (unchanged) -->
+    <div id="authSection">
+      <button class="cta" id="googleBtn">Sign in with Google</button>
+      <button class="cta" id="mailBtn">Sign in with e-mail link</button>
+      <p id="userP"></p>
+      <button class="cta hidden" id="outBtn">Sign out</button>
+    </div>
+
+    <!-- ➕ glass cards inside -->
+    <div id="mainApp" class="hidden">
+      <!-- Solo -->
+      <div class="view active" id="solo">
+        <section>
+          <h2>Solo Focus Timer</h2>
+          <label>Course</label><select id="soloCourse"></select>
+          <div class="row">
+            <div class="field"><label>Minutes</label><input id="focusMinutes" type="number" min="0" max="999" value="25"></div>
+            <div class="field"><label>Seconds</label><input id="focusSeconds" type="number" min="0" max="59" value="0"></div>
+          </div>
+          <button class="cta" id="focusStartBtn">Start focus</button>
+          <button class="cta" id="focusResetBtn" style="margin-top:.5rem;background:#6b7280">Reset</button>
+          <div class="progress-bar"><div id="focusProgress"></div></div>
+          <p style="text-align:center;margin-top:.5rem;font-size:1.5rem;font-weight:700" id="focusTimerText">25:00</p>
+        </section>
+      </div>
+
+      <!-- 1v1 -->
+      <div class="view" id="compete">
+        <section>
+          <h2>Find a live opponent</h2>
+          <label>Course</label><select id="compCourse"></select>
+          <button class="cta" id="findMatch">Find match</button>
+          <div id="matchArea"></div>
+        </section>
+      </div>
+
+      <!-- Leaders -->
+      <div class="view" id="leader">
+        <section><h2>Daily Solo Leaders</h2><div id="soloLeader"></div></section>
+        <section><h2>Competitive Wins</h2><div id="compLeader"></div></section>
+      </div>
+
+      <!-- Profile -->
+      <div class="view" id="profile">
+        <section>
+          <h2>Your Card</h2>
+          <p><strong id="cardName">—</strong></p>
+          <p>Focus minutes: <b id="cardMin">0</b></p>
+          <p>Wins: <b id="cardWins">0</b></p>
+          <p>Level: <b id="cardLvl">Rookie</b></p>
+          <button class="cta" id="resetProf">Reset my data</button>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <!-- ➕ bottom glass nav -->
+  <nav class="bottom-nav">
+    <button data-tab="solo" class="active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+      <span>Solo</span>
+    </button>
+    <button data-tab="compete">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><path d="M20 8v6M23 11h-6"></path></svg>
+      <span>1-v-1</span>
+    </button>
+    <button data-tab="leader">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 9l6 6 6-6"></path></svg>
+      <span>Leaders</span>
+    </button>
+    <button data-tab="profile">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+      <span>Profile</span>
+    </button>
+  </nav>
+
+  <script type="module" src="tfnbnr.js"></script>
+</body>
+</html>
