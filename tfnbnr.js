@@ -2,7 +2,7 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js';
 import { getAuth, signInWithPopup, GoogleAuthProvider, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js';
 
-const firebaseConfig = { /* ← your real keys here */ };
+const firebaseConfig = { /* ← your keys */ };
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
@@ -37,7 +37,6 @@ function showModal(){ $('#signModal').classList.remove('hidden'); }
 function hideModal(){ $('#signModal').classList.add('hidden'); }
 $('#closeModal').onclick = hideModal;
 
-/*  =====  AUTH BUTTONS  =====  */
 $('#googleBtn').onclick = () => signInWithPopup(auth,provider).then(hideModal).catch(console.error);
 $('#mailBtn').onclick  = () => {
   const email = prompt('Enter your e-mail:');
@@ -78,11 +77,10 @@ $('#focusStartBtn').onclick = () => {
     const ss=String(secs%60).padStart(2,0);
     $('#focusTimerText').textContent = `${mm}:${ss}`;
     $('#focusProgress').style.width = `${(1-secs/(m*60+s))*100}%`;
-    if(secs<=0){ clearInterval(iv); finishSolo(clamp(m*60+s,1,999*60+59)); }
+    if(secs<=0){ clearInterval(iv); finishSolo(m*60+s); }
   },1000);
 };
-$('#focusResetBtn').onclick = () => { location.reload(); }; /* quick reset */
-
+$('#focusResetBtn').onclick = () => { location.reload(); };
 function finishSolo(seconds){
   $('#focusStartBtn').disabled=false;
   $('#focusMinutes').disabled=$('#focusSeconds').disabled=false;
@@ -157,9 +155,9 @@ function award(seconds){
 /*  =====  CONFETTI  =====  */
 function confetti(){
   const canvas=document.createElement('canvas'),ctx=canvas.getContext('2d');
-  document.body.appendChild(canvas); canvas.style.position='fixed'; canvas.style.inset=0; canvas.style.pointerEvents='none'; canvas.style.zIndex=9999;
+  document.body.appendChild(canvas); canvas.style.position='fixed'; inset=0; canvas.style.pointerEvents='none'; canvas.style.zIndex=9999;
   const W=innerWidth,H=innerHeight; canvas.width=W; canvas.height=H;
-  const pcs=[],colors=['#3b82f6','#60a5fa','#22c55e','#eab308'];
+  const pcs=[],colors=['#7c7cff','#a5a5ff','#fecaca','#fef3c7'];
   for(let i=0;i<150;i++) pcs.push({x:W*Math.random(),y:H*Math.random(),r:Math.random()*4+2,color:colors[Math.floor(Math.random()*colors.length)],vy:Math.random()*3+2});
   function draw(){
     ctx.clearRect(0,0,W,H);
@@ -169,14 +167,20 @@ function confetti(){
   draw();
 }
 
-/*  =====  INIT  =====  */
+/*  =====  FULL COURSE LIST  =====  */
 const courses = [
-  "MS 6","MS 7","MS 8",
-  "HS Alg 1","HS Geo","HS Alg 2","HS Pre-Calc","HS Calc AB","HS Calc BC","HS Stats",
-  "Hon Geo","Hon Alg 2","Hon Pre-Calc","Hon Calc AB","Hon Calc BC",
-  "AP Calc AB","AP Calc BC","AP Stats","AP Phys 1","AP Phys 2","AP Phys C","AP Chem","AP Bio","AP Enviro","APUSH","AP World","AP Euro","AP Gov","AP Micro","AP Macro","AP CS A","AP CSP",
-  "IB SL Math","IB HL Math","IB SL Phys","IB HL Phys","IB SL Chem","IB HL Chem","IB SL Bio","IB HL Bio",
-  "College 1","College 2","College 3","College 4","Grad"
+  /*  Middle  */
+  "MS 6th Grade Math","MS 7th Grade Math","MS 8th Grade Math","MS Science 6","MS Science 7","MS Science 8","MS English 6","MS English 7","MS English 8",
+  /*  HS regular  */
+  "HS Algebra 1","HS Geometry","HS Algebra 2","HS Pre-Calc","HS Calc AB","HS Calc BC","HS Statistics","HS Biology","HS Chemistry","HS Physics","HS Earth Science","HS English 9","HS English 10","HS English 11","HS English 12","HS World History","HS US History","HS Government","HS Economics",
+  /*  HS Honors  */
+  "Hon Geometry","Hon Algebra 2","Hon Pre-Calc","Hon Calc AB","Hon Calc BC","Hon Biology","Hon Chemistry","Hon Physics","Hon English 9","Hon English 10","Hon English 11","Hon English 12","Hon World History","Hon US History",
+  /*  AP  */
+  "AP Calc AB","AP Calc BC","AP Statistics","AP Physics 1","AP Physics 2","AP Physics C Mech","AP Physics C E&M","AP Chemistry","AP Biology","AP Enviro","APUSH","AP World","AP Euro","AP Gov & Pol","AP Comparative","AP Micro","AP Macro","AP Psychology","AP Human Geo","AP CS A","AP CSP","AP English Lang","AP English Lit","AP Spanish","AP French","AP Latin","AP Art History","AP Music Theory",
+  /*  IB  */
+  "IB SL Math AA","IB HL Math AA","IB SL Math AI","IB HL Math AI","IB SL Physics","IB HL Physics","IB SL Chemistry","IB HL Chemistry","IB SL Biology","IB HL Biology","IB SL ESS","IB HL ESS","IB SL History","IB HL History","IB SL English A","IB HL English A","IB SL French B","IB HL French B","IB SL Spanish B","IB HL Spanish B","IB SL Economics","IB HL Economics","IB SL Psychology","IB HL Psychology","IB SL CS","IB HL CS","IB TOK",
+  /*  College + Grad  */
+  "College 1st Year","College 2nd Year","College 3rd Year","College 4th Year","Graduate"
 ];
 [$('#soloCourse'),$('#compCourse')].forEach(sel=> courses.forEach(c=> sel.innerHTML+=`<option>${c}</option>`));
 
