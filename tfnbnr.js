@@ -9,17 +9,6 @@ const firebaseConfig = {
   appId: "1:609221203369:web:acafea562c2f09a2ea20b8",
   measurementId: "G-N0PW3KTVE6"
 };
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js';
-import { getAuth, signInWithPopup, GoogleAuthProvider, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js';
-
-const firebaseConfig = { /* ← your keys */ };
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const provider = new GoogleAuthProvider();
-
-const $ = q => document.querySelector(q);
-const storage = (k,v) => v===undefined ? JSON.parse(localStorage.getItem(k)||'null') : localStorage.setItem(k,JSON.stringify(v));
-
 /*  =====  DARK MODE  =====  */
 $('#darkToggle').addEventListener('change',e=>{
   document.body.classList.toggle('dark',e.target.checked);
