@@ -14,7 +14,7 @@
       --radius:1.25rem; --shadow:0 4px 20px rgba(0,0,0,.05);
     }
     body.dark{
-      --bg:#1a202c; --card:#2d3748;
+      --bg:#0f172a; --card:#2d3748;
       --text:#f7fafc; --muted:#a0aec0;
     }
     *{box-sizing:border-box;margin:0;font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
@@ -35,12 +35,12 @@
     .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--card);backdrop-filter:blur(10px);border-top:1px solid rgba(0,0,0,.05);display:flex;justify-content:space-around;padding:.4rem 0;z-index:20;}
     .bottom-nav button{flex:1;background:none;border:none;color:var(--muted);font-size:.65rem;display:flex;flex-direction:column;align-items:center;gap:.2rem;cursor:pointer;transition:color .2s;}
     .bottom-nav button.active{color:var(--accent);}
-    .bottom-nav svg{width=22px;height=22px;stroke-width=1.6;}
+    .bottom-nav svg{width:22px;height:22px;stroke-width:1.6;}
 
     /*  pastel cards  */
     section{background:var(--card);border-radius:var(--radius);padding:1.25rem 1.5rem;margin-bottom:1rem;box-shadow:var(--shadow);border:1px solid rgba(0,0,0,.05);}
     label{font-size:.75rem;color:var(--muted);display:block;margin-bottom:.25rem;}
-    input,select{width:100%;padding:.55rem .65rem;border:1px solid #e2e8f0;border-radius:var(--radius);font-size:.9rem;margin-bottom:.8rem;background:transparent;}
+    input,select,textarea{width:100%;padding:.55rem .65rem;border:1px solid #e2e8f0;border-radius:var(--radius);font-size:.9rem;margin-bottom:.8rem;background:transparent;}
     .row{display:flex;gap:.5rem;}.row .field{flex:1;}
     button.cta{width:100%;padding:.7rem;border:none;border-radius:var(--radius);background:var(--accent);color:#fff;font-size:.9rem;font-weight:600;cursor:pointer;transition:background .2s,transform .1s;}
     button.cta:hover{background:var(--accent-light);}button.cta:active{transform:scale(.97);}
@@ -74,7 +74,7 @@
 
     <!--  MAIN APP  (always visible)  -->
     <div id="mainApp">
-      <!--  HOME / EXPLORE  -->
+      <!--  HOME  -->
       <div class="view active" id="home">
         <section>
           <h2>📚 Featured this week</h2>
@@ -92,7 +92,7 @@
         </section>
       </div>
 
-      <!--  SEARCH / EXPLORE  -->
+      <!--  SEARCH / Explore  -->
       <div class="view" id="explore">
         <section>
           <input placeholder="Search topics or study rooms…" style="margin-bottom:1rem;">
@@ -136,7 +136,7 @@
         </section>
       </div>
 
-      <!--  STUDY  -->
+      <!--  STUDY  (contains Solo timer)  -->
       <div class="view" id="study">
         <section>
           <h2>Study</h2>
@@ -145,4 +145,79 @@
             <button class="cta" style="flex:1;background:transparent;color:var(--muted);border:1px solid var(--muted);">Analytics</button>
           </div>
           <h3>Goals this week</h3>
-          <label><input type="checkbox"> Review AP Calc AB limits
+          <label><input type="checkbox"> Review AP Calc AB limits</label>
+          <label><input type="checkbox"> Finish Physics problem set</label>
+          <label><input type="checkbox"> Read English chap 4</label>
+          <button class="cta" style="margin-top:1rem;">+ Add goal</button>
+        </section>
+        <section>
+          <h3>Solo Focus Timer</h3>
+          <label>Course</label><select id="soloCourse"></select>
+          <div class="row">
+            <div class="field"><label>Minutes</label><input id="focusMinutes" type="number" min="0" max="999" value="25"></div>
+            <div class="field"><label>Seconds</label><input id="focusSeconds" type="number" min="0" max="59" value="0"></div>
+          </div>
+          <button class="cta" id="focusStartBtn">Start focus</button>
+          <button class="cta" id="focusResetBtn" style="margin-top:.5rem;background:#a0aec0">Reset</button>
+          <div class="progress-bar"><div id="focusProgress"></div></div>
+          <p style="text-align:center;margin-top:.5rem;font-size:1.5rem;font-weight:700" id="focusTimerText">25:00</p>
+        </section>
+      </div>
+
+      <!--  1-v-1  (gated)  -->
+      <div class="view" id="compete">
+        <section>
+          <h2>Find a live opponent</h2>
+          <label>Course</label><select id="compCourse"></select>
+          <button class="cta" id="findMatch">Find match</button>
+          <div id="matchArea"></div>
+        </section>
+      </div>
+
+      <!--  LEADERS  (gated)  -->
+      <div class="view" id="leader">
+        <section><h2>Daily Solo Leaders</h2><div id="soloLeader"></div></section>
+        <section><h2>Competitive Wins</h2><div id="compLeader"></div></section>
+      </div>
+
+      <!--  PROFILE  (gated)  -->
+      <div class="view" id="profile">
+        <section>
+          <h2>Your Card</h2>
+          <p><strong id="cardName">—</strong></p>
+          <p>Focus minutes: <b id="cardMin">0</b></p>
+          <p>Wins: <b id="cardWins">0</b></p>
+          <p>Level: <b id="cardLvl">Rookie</b></p>
+          <button class="cta" id="resetProf">Reset my data</button>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <!--  5-PUBLIC-TAB BOTTOM NAV  -->
+  <nav class="bottom-nav">
+    <button data-tab="home" class="active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+      <span>Home</span>
+    </button>
+    <button data-tab="explore">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      <span>Explore</span>
+    </button>
+    <button data-tab="create">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+      <span>Create</span>
+    </button>
+    <button data-tab="chat">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+      <span>Chat</span>
+    </button>
+    <button data-tab="study">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"></polygon></svg>
+      <span>Study</span>
+    </button>
+  </nav>
+
+  <script type="module" src="tfnbnr.js"></script>
+</body>
+</html>
