@@ -1,4 +1,14 @@
 /*  =====  FIREBASE AUTH  =====  */
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyAjIXCGgZreTDY-fWFuXIsHRFBm7dVOHGA",
+  authDomain: "tfnbnr-test.firebaseapp.com",
+  projectId: "tfnbnr-test",
+  storageBucket: "tfnbnr-test.firebasestorage.app",
+  messagingSenderId: "609221203369",
+  appId: "1:609221203369:web:acafea562c2f09a2ea20b8",
+  measurementId: "G-N0PW3KTVE6"
+};
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js';
 import { getAuth, signInWithPopup, GoogleAuthProvider, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js';
 
