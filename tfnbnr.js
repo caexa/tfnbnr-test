@@ -1,5 +1,7 @@
 /*  =====  FIREBASE AUTH  =====  */
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js';
+import { getAuth, signInWithPopup, GoogleAuthProvider, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js';
+
 const firebaseConfig = {
   apiKey: "AIzaSyAjIXCGgZreTDY-fWFuXIsHRFBm7dVOHGA",
   authDomain: "tfnbnr-test.firebaseapp.com",
@@ -9,6 +11,13 @@ const firebaseConfig = {
   appId: "1:609221203369:web:acafea562c2f09a2ea20b8",
   measurementId: "G-N0PW3KTVE6"
 };
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
+
+const $ = q => document.querySelector(q);
+const storage = (k,v) => v===undefined ? JSON.parse(localStorage.getItem(k)||'null') : localStorage.setItem(k,JSON.stringify(v));
+
 /*  =====  DARK MODE  =====  */
 $('#darkToggle').addEventListener('change',e=>{
   document.body.classList.toggle('dark',e.target.checked);
@@ -19,7 +28,7 @@ if(storage('dark')){document.body.classList.add('dark'); $('#darkToggle').checke
 /*  =====  HEADER SHADOW  =====  */
 window.addEventListener('scroll',()=>$('#topbar').classList.toggle('scrolled',window.scrollY>20));
 
-/*  =====  BOTTOM NAV  =====  */
+/*  =====  BOTTOM NAV  (5 public)  =====  */
 document.querySelectorAll('.bottom-nav button').forEach(btn=>{
   btn.addEventListener('click',()=>{
     document.querySelectorAll('.bottom-nav button').forEach(b=>b.classList.remove('active'));
@@ -154,19 +163,19 @@ function award(seconds){
 /*  =====  CONFETTI  =====  */
 function confetti(){
   const canvas=document.createElement('canvas'),ctx=canvas.getContext('2d');
-  document.body.appendChild(canvas); canvas.style.position='fixed'; inset=0; canvas.style.pointerEvents='none'; canvas.style.zIndex=9999;
-  const W=innerWidth,H=innerHeight; canvas.width=W; canvas.height=H;
+  document.body.appendChild(canvas); canvas.style.position='fixed';inset=0;canvas.style.pointerEvents='none';canvas.style.zIndex=9999;
+  const W=innerWidth,H=innerHeight;canvas.width=W;canvas.height=H;
   const pcs=[],colors=['#7c7cff','#a5a5ff','#fecaca','#fef3c7'];
   for(let i=0;i<150;i++) pcs.push({x:W*Math.random(),y:H*Math.random(),r:Math.random()*4+2,color:colors[Math.floor(Math.random()*colors.length)],vy:Math.random()*3+2});
   function draw(){
     ctx.clearRect(0,0,W,H);
-    pcs.forEach(p=>{p.y+=p.vy; ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fillStyle=p.color; ctx.fill();});
+    pcs.forEach(p=>{p.y+=p.vy;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=p.color;ctx.fill();});
     if(pcs[0].y<H+20) requestAnimationFrame(draw); else canvas.remove();
   }
   draw();
 }
 
-/*  =====  FULL COURSE LIST  =====  */
+/*  =====  FULL MS → HS → AP → IB LIST  =====  */
 const courses = [
   /*  Middle  */
   "MS 6th Grade Math","MS 7th Grade Math","MS 8th Grade Math","MS Science 6","MS Science 7","MS Science 8","MS English 6","MS English 7","MS English 8",
